@@ -1,0 +1,82 @@
+// Set the language version to match your compiler.
+pragma language_version 0.17.0;
+
+import CompactStandardLibrary;
+
+// --- Type Definitions ---
+struct ModelParameters {
+    riskThreshold: Uint<64>,
+}
+struct LabResults {
+    cholesterol: Uint<64>,
+    bloodPressure: Uint<64>,
+    isSmoker: Boolean,
+}
+struct VerifiableCredential {
+    results: LabResults,
+    signature: Bytes<64>,
+}
+
+// --- ZK-VCR Smart Contract ---
+
+// --- Ledger State ---
+export ledger owner: Bytes<32>;
+export ledger trustedIssuers: Map<Bytes<32>, Boolean>;
+export ledger usedNonces: Map<Field, Boolean>;
+export ledger modelParameters: ModelParameters;
+
+// --- Witnesses ---
+witness ownerSecretKey(): Bytes<32>;
+witness userCredential(): VerifiableCredential;
+
+// --- Helper Circuits ---
+circuit derivePublicKey(sk: Bytes<32>): Bytes<32> {
+    return persistentHash<Vector<2, Bytes<32>>>(
+        [pad(32, "zk-vcr:owner-pk"), sk]
+    );
+}
+
+// --- Constructor ---
+constructor(ownerSk: Bytes<32>, initialThreshold: Uint<64>) {
+    owner = disclose(derivePublicKey(ownerSk));
+    modelParameters = ModelParameters {
+        riskThreshold: disclose(initialThreshold),
+    };
+}
+
+// --- Administrative Circuits ---
+export circuit addIssuer(issuerKey: Bytes<32>): [] {
+    const sk = ownerSecretKey();
+    const pk = derivePublicKey(sk);
+    assert(owner == pk, "Caller is not the owner");
+    trustedIssuers.insert(disclose(issuerKey), true);
+}
+
+export circuit revokeIssuer(issuerKey: Bytes<32>): [] {
+    const sk = ownerSecretKey();
+    const pk = derivePublicKey(sk);
+    assert(owner == pk, "Caller is not the owner");
+    trustedIssuers.insert(disclose(issuerKey), false);
+}
+
+// --- The Main ZK Circuit ---
+export circuit submitHealthProof(issuerKey: Bytes<32>, challenge: Field): [] {
+    // FIX: Use the correct 'const' keyword for variable declaration.
+    const disclosedIssuerKey = disclose(issuerKey);
+    const disclosedChallenge = disclose(challenge);
+
+    // --- On-Chain Governance and Security Checks ---
+    assert(trustedIssuers.member(disclosedIssuerKey), "Issuer key not found in registry");
+    assert(trustedIssuers.lookup(disclosedIssuerKey) == true, "Issuer is not trusted");
+    assert(usedNonces.member(disclosedChallenge) == false, "Challenge nonce has already been used");
+
+    // --- ZK Logic (To be fully implemented in Phase 2) ---
+    const vc = userCredential();
+    // Placeholders...
+    // assert(checkSignature(vc.results, vc.signature, issuerKey), "VC signature is invalid");
+    // const riskScore = calculateRisk(vc.results);
+    // assert(riskScore < modelParameters.riskThreshold, "Health risk score too high");
+
+    // --- State Update ---
+    usedNonces.insert(disclosedChallenge, true);
+}

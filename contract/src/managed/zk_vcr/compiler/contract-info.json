@@ -1,0 +1,124 @@
+{
+  "circuits": [
+    {
+      "name": "addIssuer",
+      "pure": false,
+      "arguments": [
+        {
+          "name": "issuerKey",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Tuple",
+        "types": [
+        ]
+      }
+    },
+    {
+      "name": "revokeIssuer",
+      "pure": false,
+      "arguments": [
+        {
+          "name": "issuerKey",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Tuple",
+        "types": [
+        ]
+      }
+    },
+    {
+      "name": "submitHealthProof",
+      "pure": false,
+      "arguments": [
+        {
+          "name": "issuerKey",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        },
+        {
+          "name": "challenge",
+          "type": {
+            "type-name": "Field"
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Tuple",
+        "types": [
+        ]
+      }
+    }
+  ],
+  "witnesses": [
+    {
+      "name": "ownerSecretKey",
+      "arguments": [
+      ],
+      "result type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
+      "name": "userCredential",
+      "arguments": [
+      ],
+      "result type": {
+        "type-name": "Struct",
+        "name": "VerifiableCredential",
+        "elements": [
+          {
+            "name": "results",
+            "type": {
+              "type-name": "Struct",
+              "name": "LabResults",
+              "elements": [
+                {
+                  "name": "cholesterol",
+                  "type": {
+                    "type-name": "Uint",
+                    "maxval": 18446744073709551615
+                  }
+                },
+                {
+                  "name": "bloodPressure",
+                  "type": {
+                    "type-name": "Uint",
+                    "maxval": 18446744073709551615
+                  }
+                },
+                {
+                  "name": "isSmoker",
+                  "type": {
+                    "type-name": "Boolean"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "name": "signature",
+            "type": {
+              "type-name": "Bytes",
+              "length": 64
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "contracts": [
+  ]
+}

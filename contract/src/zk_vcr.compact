@@ -14,7 +14,12 @@ struct LabResults {
 }
 struct VerifiableCredential {
     results: LabResults,
-    signature: Bytes<64>,
+    signature: Bytes<32>,
+}
+
+struct VcSignaturePayload {
+    results: LabResults,
+    issuerKey: Bytes<32>,
 }
 
 // --- ZK-VCR Smart Contract ---
@@ -44,6 +49,39 @@ constructor(ownerSk: Bytes<32>, initialThreshold: Uint<64>) {
     };
 }
 
+// This pure circuit takes the user's verified lab results and the public
+// model parameters, and returns `true` if they are "Low Risk".
+circuit calculateRisk(results: LabResults, params: ModelParameters): Boolean {
+    // AI Model Logic (V1):
+    // 1. The user's cholesterol must be below the public threshold.
+    // 2. The user must not be a smoker.
+    const isCholesterolLow = results.cholesterol < params.riskThreshold;
+    const isNonSmoker = results.isSmoker == false;
+
+    // The user is "Low Risk" only if both conditions are true.
+    return isCholesterolLow && isNonSmoker;
+}
+
+// This circuit proves that the VC was "signed" by the issuer.
+circuit checkSignature(
+    results: LabResults,
+    signature: Bytes<32>,
+    issuerKey: Bytes<32>
+): Boolean {
+    // 1. Create an instance of the struct that represents the signed data.
+    const dataToSign = VcSignaturePayload {
+        results: results,
+        issuerKey: issuerKey,
+    };
+
+    // 2. Hash the entire struct. This gives us our expected signature directly.
+    const expectedSignature = persistentHash<VcSignaturePayload>(dataToSign);
+
+    // 3. The check: Does the signature in the VC match our calculation?
+    //    Both are now Bytes<32>, so this is a valid comparison.
+    return signature == expectedSignature;
+}
+
 // --- Administrative Circuits ---
 export circuit addIssuer(issuerKey: Bytes<32>): [] {
     const sk = ownerSecretKey();
@@ -61,7 +99,6 @@ export circuit revokeIssuer(issuerKey: Bytes<32>): [] {
 
 // --- The Main ZK Circuit ---
 export circuit submitHealthProof(issuerKey: Bytes<32>, challenge: Field): [] {
-    // FIX: Use the correct 'const' keyword for variable declaration.
     const disclosedIssuerKey = disclose(issuerKey);
     const disclosedChallenge = disclose(challenge);
 
@@ -70,13 +107,20 @@ export circuit submitHealthProof(issuerKey: Bytes<32>, challenge: Field): [] {
     assert(trustedIssuers.lookup(disclosedIssuerKey) == true, "Issuer is not trusted");
     assert(usedNonces.member(disclosedChallenge) == false, "Challenge nonce has already been used");
 
-    // --- ZK Logic (To be fully implemented in Phase 2) ---
+    // --- ZK Logic ---
+
+    // 1. Get the private VC from the user's machine via the witness.
     const vc = userCredential();
-    // Placeholders...
-    // assert(checkSignature(vc.results, vc.signature, issuerKey), "VC signature is invalid");
-    // const riskScore = calculateRisk(vc.results);
-    // assert(riskScore < modelParameters.riskThreshold, "Health risk score too high");
+
+    // 2. Verify the VC's signature using our helper circuit.
+    const isSignatureValid = checkSignature(vc.results, vc.signature, disclosedIssuerKey);
+    assert(isSignatureValid, "VC signature is invalid");
+
+    // 3. Run the AI model on the (now verified) data.
+    const isLowRisk = calculateRisk(vc.results, modelParameters);
+    assert(isLowRisk, "Health risk score does not meet criteria");
 
     // --- State Update ---
+    // If all assertions pass, the proof is valid. Update the nonce map.
     usedNonces.insert(disclosedChallenge, true);
 }

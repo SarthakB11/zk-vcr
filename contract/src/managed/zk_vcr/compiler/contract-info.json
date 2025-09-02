@@ -112,7 +112,7 @@
             "name": "signature",
             "type": {
               "type-name": "Bytes",
-              "length": 64
+              "length": 32
             }
           }
         ]

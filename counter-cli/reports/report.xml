@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="1" errors="0" time="0">
+    <testsuite name="src/test/verifier.api.test.ts" timestamp="2025-09-04T01:47:47.555Z" hostname="SarthakBhardwaj" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="src/test/verifier.api.test.ts" name="src/test/verifier.api.test.ts" time="0">
+            <failure message="Cannot read properties of undefined (reading &apos;Contract&apos;)" type="TypeError">
+TypeError: Cannot read properties of undefined (reading &apos;Contract&apos;)
+ ❯ src/api.ts:72:72
+ ❯ src/test/verifier.api.test.ts:19:1
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

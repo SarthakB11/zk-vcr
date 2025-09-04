@@ -1,0 +1,10 @@
+{"level":30,"time":1756952723631,"pid":88041,"hostname":"SarthakBhardwaj","msg":"File path for save file not found, building wallet from scratch"}
+{"level":30,"time":1756952723732,"pid":88041,"hostname":"SarthakBhardwaj","msg":"Your wallet seed is: 50138dd617e1498a1a8cb7eae0d5d4d468b9a4d6c3810d310455544b27583016"}
+{"level":30,"time":1756952723733,"pid":88041,"hostname":"SarthakBhardwaj","msg":"Your wallet address is: mn_shield-addr_test1trvfkddk3n6eqsnd4a268edzlurz3qvae0e0g5tmyswf5geqndaqxq9359x60s5kyh5m4tnw4e2tvr0enca9sz6xp3s5xuvelyvpjnddfus7cqcr"}
+{"level":30,"time":1756952723734,"pid":88041,"hostname":"SarthakBhardwaj","msg":"Your wallet balance is: 0"}
+{"level":30,"time":1756952723734,"pid":88041,"hostname":"SarthakBhardwaj","msg":"Waiting to receive tokens..."}
+{"level":30,"time":1756952723740,"pid":88041,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=0"}
+{"level":30,"time":1756952733037,"pid":88041,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=3"}
+{"level":30,"time":1756952733039,"pid":88041,"hostname":"SarthakBhardwaj","msg":"Your wallet balance is: 9553269"}
+{"level":50,"time":1756952745797,"pid":88041,"hostname":"SarthakBhardwaj","msg":"Found error 'Invalid hex-digit 'j' found in input string at index 0.'"}
+{"level":30,"time":1756952745798,"pid":88041,"hostname":"SarthakBhardwaj","msg":"Exiting..."}

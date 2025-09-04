@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "file": "index.cjs",
+  "sourceRoot": "../../../../",
+  "sources": ["src/verifier.compact", "compiler/standard-library.compact"],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAeA;;;;;;;;;;;;;MAWA,AAAA,MAIC;;;;;cAJqB,IAAa;;;;;;;;;;;;;;;;;;yCAAb,IAAa;;;;;;;mEAAb,IAAa;;;OAIlC;;;GAAC;EAfF;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;IAKA;;;;;;;;;uDAAgC;;;;;;;GAU9B;ECkBF,AAAA,kBAAiC;oEAAA;;;EDzBjC,AAAA,YAA2B;;0DAA3B,SAA2B;;;;;;;;;;;;;;GAAA;EAG3B,AAAA,SAIC,4BAJqB,IAAa;UAC3B,QAAoB;iEACG,QAAM,GAAK,IAAE;;UAC1C,KAAQ;IAAR;;;;;;;;;;2EAAA,KAAQ;;;;sDAAA;;GACT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;IAVD;qCAAA;;;;;;;;;;;wFAAgC;KAAA;;;;;;;;;;;;;;"
+}

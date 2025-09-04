@@ -1,0 +1,10 @@
+{"level":30,"time":1756955367310,"pid":89422,"hostname":"SarthakBhardwaj","msg":"File path for save file not found, building wallet from scratch"}
+{"level":30,"time":1756955367401,"pid":89422,"hostname":"SarthakBhardwaj","msg":"Your wallet seed is: f553374115bcffe6dd8c0b8b27d7f136fafcd055ab8e788d25909b0176aef306"}
+{"level":30,"time":1756955367402,"pid":89422,"hostname":"SarthakBhardwaj","msg":"Your wallet address is: mn_shield-addr_test1ghhkt7e08wnytrruwfeeve0g2zrk0gyxtek3rx53j4x5smdfteeqxqq4m7pv5lyd4hddd55v9w2cup3azq50ckznjjc2x82lddzyuvn82svkqeq3"}
+{"level":30,"time":1756955367402,"pid":89422,"hostname":"SarthakBhardwaj","msg":"Your wallet balance is: 0"}
+{"level":30,"time":1756955367403,"pid":89422,"hostname":"SarthakBhardwaj","msg":"Waiting to receive tokens..."}
+{"level":30,"time":1756955367408,"pid":89422,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=0"}
+{"level":30,"time":1756955377850,"pid":89422,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=0"}
+{"level":30,"time":1756955390347,"pid":89422,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=0"}
+{"level":30,"time":1756955401554,"pid":89422,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=0"}
+{"level":30,"time":1756955414059,"pid":89422,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=0"}

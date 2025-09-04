@@ -1,0 +1,16 @@
+{"level":30,"time":1756955047513,"pid":89340,"hostname":"SarthakBhardwaj","msg":"File path for save file not found, building wallet from scratch"}
+{"level":30,"time":1756955047608,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Your wallet seed is: 50138dd617e1498a1a8cb7eae0d5d4d468b9a4d6c3810d310455544b27583016"}
+{"level":30,"time":1756955047609,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Your wallet address is: mn_shield-addr_test1trvfkddk3n6eqsnd4a268edzlurz3qvae0e0g5tmyswf5geqndaqxq9359x60s5kyh5m4tnw4e2tvr0enca9sz6xp3s5xuvelyvpjnddfus7cqcr"}
+{"level":30,"time":1756955047610,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Your wallet balance is: 0"}
+{"level":30,"time":1756955047610,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Waiting to receive tokens..."}
+{"level":30,"time":1756955047615,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=0"}
+{"level":30,"time":1756955056807,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=5"}
+{"level":30,"time":1756955056809,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Your wallet balance is: 9106844"}
+{"level":30,"time":1756955076201,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Deploying verifier contract..."}
+{"level":30,"time":1756955104618,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Deployed contract at address: 0200d2e8819cd153ec99a92db0a149825330f86a8632c41b519906408f13e4ee1c50"}
+{"level":30,"time":1756955109486,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Checking contract ledger state..."}
+{"level":30,"time":1756955109684,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Ledger state: 0"}
+{"level":30,"time":1756955109685,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Current verifier state: 0"}
+{"level":30,"time":1756955139087,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Verifying..."}
+{"level":50,"time":1756955140071,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Found error 'type error: verify argument 1 (argument 2 as invoked from Typescript) at verifier.compact line 27 char 1; expected value of type Bytes<32> but received <Buffer 02 00 d2 e8 81 9c d1 53 ec 99 a9 2d b0 a1 49 82 53 30 f8 6a 86 32 c4 1b 51 99 06 40 8f 13 e4 ee 1c 50>'"}
+{"level":30,"time":1756955140072,"pid":89340,"hostname":"SarthakBhardwaj","msg":"Exiting..."}

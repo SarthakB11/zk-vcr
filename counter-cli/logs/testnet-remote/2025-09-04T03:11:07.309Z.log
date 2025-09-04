@@ -1,0 +1,19 @@
+{"level":30,"time":1756955471863,"pid":89473,"hostname":"SarthakBhardwaj","msg":"File path for save file not found, building wallet from scratch"}
+{"level":30,"time":1756955471960,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Your wallet seed is: 50138dd617e1498a1a8cb7eae0d5d4d468b9a4d6c3810d310455544b27583016"}
+{"level":30,"time":1756955471961,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Your wallet address is: mn_shield-addr_test1trvfkddk3n6eqsnd4a268edzlurz3qvae0e0g5tmyswf5geqndaqxq9359x60s5kyh5m4tnw4e2tvr0enca9sz6xp3s5xuvelyvpjnddfus7cqcr"}
+{"level":30,"time":1756955471962,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Your wallet balance is: 0"}
+{"level":30,"time":1756955471962,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Waiting to receive tokens..."}
+{"level":30,"time":1756955471968,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=0"}
+{"level":30,"time":1756955482365,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Waiting for funds. Backend lag: 0, wallet lag: 0, transactions=6"}
+{"level":30,"time":1756955482367,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Your wallet balance is: 8667912"}
+{"level":30,"time":1756955491729,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Deploying verifier contract..."}
+{"level":30,"time":1756955523751,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Deployed contract at address: 020003a95387bdbb5e5028610c281ce6897532c4e760f8e0d61055b060781ce096b6"}
+{"level":30,"time":1756955533638,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Checking contract ledger state..."}
+{"level":30,"time":1756955534190,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Ledger state: 0"}
+{"level":30,"time":1756955534190,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Current verifier state: 0"}
+{"level":30,"time":1756955544998,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Verifying..."}
+{"level":30,"time":1756955577700,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Transaction 000000002b2e92cb1f05b44705e79f8ce6ecda1a61f8c0d1b06c8336a4fb066435c44442 added in block 1557792"}
+{"level":30,"time":1756955584079,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Checking contract ledger state..."}
+{"level":30,"time":1756955584644,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Ledger state: 1"}
+{"level":30,"time":1756955584644,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Current verifier state: 1"}
+{"level":30,"time":1756955602920,"pid":89473,"hostname":"SarthakBhardwaj","msg":"Exiting..."}

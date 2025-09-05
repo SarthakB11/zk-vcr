@@ -1,0 +1,41 @@
+{
+  "name": "@midnight-ntwrk/zk-vcr-cli",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "testnet-remote": "node --experimental-specifier-resolution=node --loader ts-node/esm src/testnet-remote.ts",
+    "build": "rm -rf dist && tsc --project tsconfig.build.json",
+    "lint": "eslint src",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start-testnet-remote": "npm run build && npm run testnet-remote"
+  },
+  "dependencies": {
+    "@midnight-ntwrk/compact-runtime": "*",
+    "@midnight-ntwrk/ledger": "*",
+    "@midnight-ntwrk/midnight-js-contracts": "*",
+    "@midnight-ntwrk/midnight-js-http-client-proof-provider": "*",
+    "@midnight-ntwrk/midnight-js-indexer-public-data-provider": "*",
+    "@midnight-ntwrk/midnight-js-level-private-state-provider": "*",
+    "@midnight-ntwrk/midnight-js-network-id": "*",
+    "@midnight-ntwrk/midnight-js-node-zk-config-provider": "*",
+    "@midnight-ntwrk/midnight-js-types": "*",
+    "@midnight-ntwrk/midnight-js-utils": "*",
+    "@midnight-ntwrk/wallet": "*",
+    "@midnight-ntwrk/wallet-api": "*",
+    "@midnight-ntwrk/zk-vcr-contract": "0.1.0",
+    "@midnight-ntwrk/zswap": "*",
+    "@types/ws": "^8.18.1",
+    "crypto": "*",
+    "pino": "*",
+    "rxjs": "*",
+    "ts-node": "*",
+    "typescript": "*",
+    "ws": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.1",
+    "pino-pretty": "^13.1.1"
+  }
+}

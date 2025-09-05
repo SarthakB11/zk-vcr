@@ -1,5 +1,5 @@
 {
-  "name": "@midnight-ntwrk/counter-contract",
+  "name": "@midnight-ntwrk/zk-vcr-contract",
   "version": "0.1.0",
   "license": "Apache-2.0",
   "private": true,
@@ -19,8 +19,12 @@
     "compact": "compactc src/zk_vcr.compact src/managed/zk_vcr",
     "test": "vitest run",
     "test:compile": "npm run compact && vitest run",
-    "build": "rm -rf dist && tsc --project tsconfig.build.json && cp -Rf ./src/managed ./dist/managed && cp ./src/counter.compact ./dist",
+    "build": "rm -rf dist && tsc --project tsconfig.build.json && cp -Rf ./src/managed ./dist/managed && cp ./src/zk_vcr.compact ./dist",
     "lint": "eslint src",
     "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@midnight-ntwrk/compact-runtime": "^0.8.1",
+    "typescript": "^5.9.2"
   }
 }

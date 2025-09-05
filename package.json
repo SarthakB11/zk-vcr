@@ -1,0 +1,17 @@
+{
+  "name": "zk-vcr-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "contract",
+    "cli"
+  ],
+  "devDependencies": {
+    "@types/pino-pretty": "^5.0.0",
+    "@types/ws": "^8.18.1",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "pino-pretty": "^13.1.1"
+  }
+}

@@ -1,4 +1,3 @@
-
 import { type Resource } from '@midnight-ntwrk/wallet';
 import { type Wallet } from '@midnight-ntwrk/wallet-api';
 import { stdin as input, stdout as output } from 'node:process';
@@ -7,6 +6,8 @@ import { type Logger } from 'pino';
 import { type VerifierProviders, type DeployedVerifierContract } from './common-types';
 import { type Config } from './config';
 import * as api from './api';
+import { type VerifiableCredential } from '@midnight-ntwrk/zk-vcr-contract';
+import * as fs from 'fs/promises';
 
 let logger: Logger;
 
@@ -35,7 +36,14 @@ const deployOrJoin = async (providers: VerifierProviders, rli: Interface): Promi
     switch (choice) {
       case '1': {
         const secret = await rli.question('Enter the initial secret (hex): ');
-        return await api.deploy(providers, { secret: Buffer.from(secret, 'hex') });
+        const ownerSk = Buffer.from(secret, 'hex');
+        const verifierContract = await api.deploy(providers, ownerSk);
+
+        const issuerKeyHex = await rli.question('Enter the issuer public key to add (hex): ');
+        const issuerKey = new Uint8Array(Buffer.from(issuerKeyHex, 'hex'));
+        await api.addIssuer(verifierContract, issuerKey);
+
+        return verifierContract;
       }
       case '2':
         return await join(providers, rli);
@@ -58,13 +66,27 @@ const mainLoop = async (providers: VerifierProviders, rli: Interface): Promise<v
     switch (choice) {
       case '1': {
         const challenge = await rli.question('Enter the challenge (hex): ');
-        const issuerKey = await rli.question('Enter the issuer key (hex): ');
-        const issuerKeyBytes = new Uint8Array(32);
-        if (issuerKey.length > 0) {
-          const buffer = Buffer.from(issuerKey, 'hex');
-          issuerKeyBytes.set(buffer.slice(0, 32));
+        const issuerKeyHex = await rli.question('Enter the issuer key (hex): ');
+        const issuerKey = new Uint8Array(Buffer.from(issuerKeyHex, 'hex'));
+
+        const credentialContent = await fs.readFile('./credential.json', 'utf-8');
+        const credentialFromFile = JSON.parse(credentialContent);
+        
+        // We need to update the private state to include the credential for the witness
+        const currentPrivateState = await providers.privateStateProvider.get('verifierPrivateState');
+        if (currentPrivateState) {
+            currentPrivateState.credential = {
+                results: {
+                    cholesterol: BigInt(credentialFromFile.results.cholesterol),
+                    bloodPressure: BigInt(credentialFromFile.results.bloodPressure),
+                    isSmoker: credentialFromFile.results.isSmoker,
+                },
+                signature: Buffer.from(credentialFromFile.signature, 'hex'),
+            };
+            await providers.privateStateProvider.set('verifierPrivateState', currentPrivateState);
         }
-        await api.submitHealthProof(verifierContract, BigInt(`0x${challenge}`), issuerKeyBytes);
+
+        await api.submitHealthProof(verifierContract, BigInt(`0x${challenge}`), issuerKey);
         break;
       }
       case '2':

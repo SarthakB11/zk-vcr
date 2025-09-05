@@ -1,5 +1,5 @@
 import { type ContractAddress } from '@midnight-ntwrk/compact-runtime';
-import { Verifier, type VerifierPrivateState, witnesses } from '@midnight-ntwrk/zk-vcr-contract';
+import { Verifier, type VerifierPrivateState, witnesses, type VerifiableCredential } from '@midnight-ntwrk/zk-vcr-contract';
 import { type CoinInfo, nativeToken, Transaction, type TransactionId } from '@midnight-ntwrk/ledger';
 import { deployContract, findDeployedContract } from '@midnight-ntwrk/midnight-js-contracts';
 import { httpClientProofProvider } from '@midnight-ntwrk/midnight-js-http-client-proof-provider';
@@ -40,14 +40,39 @@ let logger: Logger;
 export const getVerifierLedgerState = async (
   providers: VerifierProviders,
   contractAddress: ContractAddress,
-): Promise<bigint | null> => {
+): Promise<string | null> => {
   assertIsContractAddress(contractAddress);
   logger.info('Checking contract ledger state...');
-  const state = await providers.publicDataProvider
-    .queryContractState(contractAddress)
-    .then((contractState) => (contractState != null ? 0n : null));
-  logger.info(`Ledger state: ${state}`);
-  return state;
+  const contractState = await providers.publicDataProvider.queryContractState(contractAddress);
+  if (contractState) {
+    const ledgerState = Verifier.ledger(contractState.data);
+
+    const trustedIssuersMap = new Map<string, boolean>();
+    for (const [key, value] of ledgerState.trustedIssuers) {
+      trustedIssuersMap.set(toHex(key), value);
+    }
+
+    const usedNoncesMap = new Map<string, boolean>();
+    for (const [key, value] of ledgerState.usedNonces) {
+      usedNoncesMap.set(key.toString(), value);
+    }
+
+    const plainObject = {
+      owner: toHex(ledgerState.owner),
+      trustedIssuers: Object.fromEntries(trustedIssuersMap),
+      usedNonces: Object.fromEntries(usedNoncesMap),
+      modelParameters: {
+        riskThreshold: ledgerState.modelParameters.riskThreshold.toString(),
+      },
+    };
+
+    const stateStr = JSON.stringify(plainObject, null, 2);
+    logger.info(`Ledger state: ${stateStr}`);
+    return stateStr;
+  } else {
+    logger.info('Ledger state: null');
+    return null;
+  }
 };
 
 export const verifierContractInstance: VerifierContract = new Verifier.Contract(witnesses);
@@ -68,22 +93,35 @@ export const joinContract = async (
 
 export const deploy = async (
   providers: VerifierProviders,
-  privateState: VerifierPrivateState,
+  ownerSk: Uint8Array,
 ): Promise<DeployedVerifierContract> => {
   logger.info('Deploying verifier contract...');
-  const ownerSk = new Uint8Array(32);
-  const initialThreshold = 0n;
+  const initialThreshold = 180n;
   const verifierContract = await deployContract(providers, {
     contract: verifierContractInstance,
     privateStateId: 'verifierPrivateState',
-    initialPrivateState: privateState,
-    args: [ownerSk, initialThreshold]
+    initialPrivateState: { secret: ownerSk },
+    args: [ownerSk, initialThreshold],
   });
   logger.info(`Deployed contract at address: ${verifierContract.deployTxData.public.contractAddress}`);
   return verifierContract;
 };
 
-export const submitHealthProof = async (verifierContract: DeployedVerifierContract, challenge: bigint, issuerKey: Uint8Array): Promise<FinalizedTxData> => {
+export const addIssuer = async (
+  verifierContract: DeployedVerifierContract,
+  issuerKey: Uint8Array,
+): Promise<FinalizedTxData> => {
+  logger.info('Adding issuer...');
+  const finalizedTxData = await verifierContract.callTx.addIssuer(issuerKey);
+  logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
+  return finalizedTxData.public;
+};
+
+export const submitHealthProof = async (
+  verifierContract: DeployedVerifierContract,
+  challenge: bigint,
+  issuerKey: Uint8Array,
+): Promise<FinalizedTxData> => {
   logger.info('Submitting health proof...');
   const finalizedTxData = await verifierContract.callTx.submitHealthProof(issuerKey, challenge);
   logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
@@ -93,13 +131,13 @@ export const submitHealthProof = async (verifierContract: DeployedVerifierContra
 export const displayVerifierState = async (
   providers: VerifierProviders,
   verifierContract: DeployedVerifierContract,
-): Promise<{ state: bigint | null; contractAddress: string }> => {
+): Promise<{ state: string | null; contractAddress: string }> => {
   const contractAddress = verifierContract.deployTxData.public.contractAddress;
   const state = await getVerifierLedgerState(providers, contractAddress);
   if (state === null) {
     logger.info(`There is no verifier contract deployed at ${contractAddress}.`);
   } else {
-    logger.info(`Current verifier state: ${Number(state)}`);
+    logger.info(`Current verifier state: ${state}`);
   }
   return { contractAddress, state };
 };
@@ -174,7 +212,7 @@ export const waitForFunds = (wallet: Wallet) =>
         return state.syncProgress?.synced === true;
       }),
       Rx.map((s) => s.balances[nativeToken()] ?? 0n),
-      Rx.filter((balance) => balance > 0n),
+      Rx.filter((balance) => balance > 1000000n),
     ),
   );
 

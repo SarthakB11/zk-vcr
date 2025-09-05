@@ -9,10 +9,11 @@
     "build": "rm -rf dist && tsc --project tsconfig.build.json",
     "lint": "eslint src",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "issuer-tool": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/generate-client.ts",
     "start-testnet-remote": "npm run build && npm run testnet-remote"
   },
   "dependencies": {
-    "@midnight-ntwrk/compact-runtime": "*",
+    "@midnight-ntwrk/compact-runtime": "0.8.1",
     "@midnight-ntwrk/ledger": "*",
     "@midnight-ntwrk/midnight-js-contracts": "*",
     "@midnight-ntwrk/midnight-js-http-client-proof-provider": "*",
@@ -24,11 +25,17 @@
     "@midnight-ntwrk/midnight-js-utils": "*",
     "@midnight-ntwrk/wallet": "*",
     "@midnight-ntwrk/wallet-api": "*",
-        "@midnight-ntwrk/zk-vcr-contract": "0.1.0",
-    "@midnight-ntwrk/compact-runtime": "0.8.1"
+    "@midnight-ntwrk/zk-vcr-contract": "0.1.0",
+    "@types/progress": "^2.0.7",
+    "chalk": "^5.6.0",
+    "cli-progress": "^3.12.0",
+    "ora": "^8.2.0",
+    "progress": "^2.0.3"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
+    "@types/pino": "^7.0.4",
+    "pino": "^9.9.4",
     "pino-pretty": "^11.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"

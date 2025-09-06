@@ -117,6 +117,25 @@ export const addIssuer = async (
   return finalizedTxData.public;
 };
 
+export const revokeIssuer = async (
+  verifierContract: DeployedVerifierContract,
+  issuerKey: Uint8Array,
+): Promise<FinalizedTxData> => {
+  logger.info('Revoking issuer...');
+  const finalizedTxData = await verifierContract.callTx.revokeIssuer(issuerKey);
+  logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
+  return finalizedTxData.public;
+};
+
+export const getChallenge = async (
+  verifierContract: DeployedVerifierContract,
+): Promise<bigint> => {
+  logger.info('Getting challenge from contract...');
+  const finalizedTxData = await verifierContract.callTx.getChallenge();
+  logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
+  return finalizedTxData.private.result;
+};
+
 export const submitHealthProof = async (
   verifierContract: DeployedVerifierContract,
   challenge: bigint,

@@ -29,6 +29,7 @@ export ledger owner: Bytes<32>;
 export ledger trustedIssuers: Map<Bytes<32>, Boolean>;
 export ledger usedNonces: Map<Field, Boolean>;
 export ledger modelParameters: ModelParameters;
+export ledger nonceCounter: Counter;
 
 // --- Witnesses ---
 witness ownerSecretKey(): Bytes<32>;
@@ -80,6 +81,13 @@ circuit checkSignature(
     // 3. The check: Does the signature in the VC match our calculation?
     //    Both are now Bytes<32>, so this is a valid comparison.
     return signature == expectedSignature;
+}
+
+// --- Challenge-Response ---
+export circuit getChallenge(): Field {
+    const challenge = nonceCounter.read() as Field;
+    nonceCounter.increment(1);
+    return challenge;
 }
 
 // --- Administrative Circuits ---

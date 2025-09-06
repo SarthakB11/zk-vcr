@@ -5,12 +5,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "testnet-remote": "node --experimental-specifier-resolution=node --loader ts-node/esm src/testnet-remote.ts",
+    "testnet-remote": "NODE_NO_WARNINGS=1 node --experimental-specifier-resolution=node --loader ts-node/esm src/testnet-remote.ts",
     "build": "rm -rf dist && tsc --project tsconfig.build.json",
     "lint": "eslint src",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "issuer-tool": "node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm src/generate-client.ts",
-    "start-testnet-remote": "npm run build && npm run testnet-remote"
+    "start-testnet-remote": "npm run build --silent && npm run testnet-remote --silent"
   },
   "dependencies": {
     "@midnight-ntwrk/compact-runtime": "0.8.1",

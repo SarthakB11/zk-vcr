@@ -28,9 +28,7 @@ Our project demonstrates that it's possible to build systems that are both trust
 
 Here is a live recording of the ZK-VCR Command-Line Interface (CLI) in action, demonstrating the complete end-to-end flow from credential generation to on-chain private verification.
 
-![ZK-VCR Demo GIF](https://github.com/SarthakB11/zk-vcr/blob/main/demo.gif)
-
----
+[![Watch the ZK-VCR Demo]](https://github.com/user-attachments/assets/1b93a224-a133-44aa-903a-e9bb0911e9a8)
 
 ### How It Works: The Chain of Trust
 
@@ -258,7 +256,7 @@ With your environment configured, you can now download and build ZK-VCR.
 
 ### 4. Running the End-to-End Demo
 
-![ZK-VCR Demo GIF](https://github.com/SarthakB11/zk-vcr/blob/main/demo.gif)
+[![Watch the ZK-VCR Demo]](https://github.com/user-attachments/assets/1b93a224-a133-44aa-903a-e9bb0911e9a8)
 
 This process demonstrates the three distinct roles in our system: the **Issuer**, the **Administrator**, and the **User**. This requires **two separate WSL terminals**.
 
@@ -314,13 +312,13 @@ Now we run the main application to deploy the contract and use the credential.
     *   ✅ **Success!** You should see a "Verification Successful!" message.
     *   To be certain, you can go back to the **Administrator Flow** (you will need to re-enter the owner's secret key for authentication) and **Display the contract state**. You will see that the `usedNonces` map has been updated, providing on-chain evidence of your successful, private verification.
 
-![Success Screenshot](https://github.com/SarthakB11/zk-vcr/blob/main/screenshot.png)
+![Success Screenshot](https://github.com/user-attachments/assets/b2b240fc-232c-498e-b102-59129609ea19)
 
 Congratulations! You have successfully run the entire ZK-VCR workflow, acting as all three participants in a secure, privacy-preserving ecosystem.
 
----
+</details>
 
-### 5. Troubleshooting
+### Troubleshooting
 
 <details>
 <summary><strong>▶️ Click to expand: Common Issues & Solutions.</strong></summary>
@@ -390,7 +388,7 @@ This guide provides solutions to common errors you might encounter while using t
 
 *   **✅ How to fix it:**
     1.  Make sure Docker Desktop is installed and running on your host machine.
-    2.  In a separate terminal, run the command from the tutorial to start the proof server: `docker run -p 6300:6300 midnightnetwork/proof-server ...`
+    2.  In a separate terminal, run the command from the tutorial to start the proof server: `docker run -p 6300:6300 midnightnetwork/proof-server -- 'midnight-proof-server --network testnet'`
     3.  Leave this terminal running in the background while you use the main CLI.
 
 ---
@@ -407,8 +405,6 @@ This guide provides solutions to common errors you might encounter while using t
     3.  The CLI will attempt to query the indexer for this address and will fail when it finds nothing.
 
 *   **✅ How to fix it:** Carefully copy and paste the exact contract address that was output when the contract was deployed. Ensure there are no extra spaces or missing characters.
-
-</details>
 
 </details>
 
@@ -448,6 +444,89 @@ The concepts in this project are built upon foundational research in cryptograph
 *   **Proof Generation:** Midnight Proof Server (Docker)
 *   **CLI Enhancements:** `chalk`, `inquirer`, `ora`
 
+### Detailed Repository Diagram
+
+```mermaid
+flowchart TD
+    %% Subgraphs
+    subgraph "Real-World" 
+        direction TB
+        IssuerEntity["Trusted Clinic"]:::realWorld
+    end
+
+    subgraph "User's Local Machine"
+        direction TB
+        IssuerToolCLI["Issuer-Tool CLI"]:::offChain
+        MainCLI["Main CLI"]:::offChain
+        API["CLI API Layer"]:::offChain
+        Config["config.ts"]:::offChain
+        Logger["logger-utils.ts"]:::offChain
+        Hash["hash-vc.mjs"]:::offChain
+        CommonTypes["common-types.ts"]:::offChain
+        GenerateClient["Generate-Client Module"]:::offChain
+        TestnetRemote["Testnet Remote Connector"]:::offChain
+        CircuitEngine["ZK Circuit Engine"]:::offChain
+        ProofServer["Proof Server (Docker)"]:::external
+        AdminCLI["Admin CLI"]:::offChain
+    end
+
+    subgraph "Midnight Blockchain"
+        direction TB
+        SmartContract["Smart Contract<br/>(ZK Verifier & Governance)"]:::onChain
+        ChallengeNonce["Challenge Nonce Generator"]:::onChain
+        GovernanceRegistry["Issuer Registry & Nonce State"]:::onChain
+    end
+
+    subgraph "Development & Testing"
+        direction TB
+        WitnessGen["witnesses.ts"]:::offChain
+        ContractTests["counter-simulator.ts (Tests)"]:::offChain
+        BuildConfig["package.json"]:::offChain
+    end
+
+    %% Flows
+    IssuerEntity -->|"JSON VC"| IssuerToolCLI
+    IssuerToolCLI -->|"credential.json"| MainCLI
+    MainCLI -->|"uses API"| API
+    API -->|"getChallenge() TX"| SmartContract
+    SmartContract -->|"nonce"| API
+    API -->|"nonce"| MainCLI
+    MainCLI -->|"uses circuit & VC"| CircuitEngine
+    CircuitEngine -->|"gRPC/HTTP"| ProofServer
+    ProofServer -->|"ZK Proof"| MainCLI
+    MainCLI -->|"submitProof TX"| SmartContract
+    SmartContract -->|"verify & update"| GovernanceRegistry
+
+    AdminCLI -->|"addIssuer TX"| SmartContract
+
+    MainCLI -->|"generate client code"| GenerateClient
+    MainCLI -->|"connect RPC"| TestnetRemote
+
+    %% Click Events
+    click IssuerToolCLI "https://github.com/sarthakb11/zk-vcr/blob/master/cli/src/issuer-tool.ts"
+    click MainCLI "https://github.com/sarthakb11/zk-vcr/blob/master/cli/src/cli.ts"
+    click GenerateClient "https://github.com/sarthakb11/zk-vcr/blob/master/cli/src/generate-client.ts"
+    click TestnetRemote "https://github.com/sarthakb11/zk-vcr/blob/master/cli/src/testnet-remote.ts"
+    click Config "https://github.com/sarthakb11/zk-vcr/blob/master/cli/src/config.ts"
+    click Logger "https://github.com/sarthakb11/zk-vcr/blob/master/cli/src/logger-utils.ts"
+    click Hash "https://github.com/sarthakb11/zk-vcr/blob/master/cli/src/hash-vc.mjs"
+    click CommonTypes "https://github.com/sarthakb11/zk-vcr/blob/master/cli/src/common-types.ts"
+    click API "https://github.com/sarthakb11/zk-vcr/blob/master/cli/src/api.ts"
+    click SmartContract "https://github.com/sarthakb11/zk-vcr/blob/master/contract/src/index.ts"
+    click CircuitEngine "https://github.com/sarthakb11/zk-vcr/blob/master/contract/src/zk_vcr.compact"
+    click ProofServer "https://github.com/sarthakb11/zk-vcr/tree/master/docker-proof-server"
+    click GovernanceRegistry "https://github.com/sarthakb11/zk-vcr/blob/master/contract/src/managed/zk_vcr/compiler/contract-info.json"
+    click WitnessGen "https://github.com/sarthakb11/zk-vcr/blob/master/contract/src/witnesses.ts"
+    click ContractTests "https://github.com/sarthakb11/zk-vcr/blob/master/contract/src/test/counter-simulator.ts"
+    click BuildConfig "https://github.com/sarthakb11/zk-vcr/blob/master/contract/package.json"
+
+    %% Styles
+    classDef realWorld fill:#f9c2e5,stroke:#333,stroke-width:1px
+    classDef offChain fill:#d3d3d3,stroke:#333,stroke-width:1px
+    classDef onChain fill:#c2d9fe,stroke:#333,stroke-width:1px
+    classDef external fill:#fff2a8,stroke:#333,stroke-width:1px
+```
+
 ### Future Work
 
 While ZK-VCR is a complete end-to-end DApp, this architecture opens the door for exciting future possibilities:
@@ -463,3 +542,4 @@ This project is open-source and licensed under the [Apache License 2.0](./LICENS
 ### Acknowledgements
 
 We would like to thank the Midnight Foundation and the DEV Community for organizing the "Privacy First" Challenge and providing the tools and platform to build the future of decentralized, privacy-preserving applications.
+

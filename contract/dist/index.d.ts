@@ -1,2 +1,2 @@
-export * as Counter from "./managed/counter/contract/index.cjs";
+export * as Verifier from "./managed/zk_vcr/contract/index.cjs";
 export * from "./witnesses";

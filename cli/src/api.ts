@@ -108,13 +108,50 @@ export const deploy = async (
 };
 
 export const addIssuer = async (
+  providers: VerifierProviders,
   verifierContract: DeployedVerifierContract,
+  ownerSk: Uint8Array,
   issuerKey: Uint8Array,
 ): Promise<FinalizedTxData> => {
-  logger.info('Adding issuer...');
+  logger.info('Updating private state with owner secret key for authentication...');
+  const currentPrivateState = await providers.privateStateProvider.get('verifierPrivateState');
+  if (!currentPrivateState) {
+    throw new Error('Could not find private state to update for owner authentication.');
+  }
+  currentPrivateState.secret = ownerSk;
+  await providers.privateStateProvider.set('verifierPrivateState', currentPrivateState);
+  logger.info('Private state updated. Adding issuer...');
   const finalizedTxData = await verifierContract.callTx.addIssuer(issuerKey);
   logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
   return finalizedTxData.public;
+};
+
+export const revokeIssuer = async (
+  providers: VerifierProviders,
+  verifierContract: DeployedVerifierContract,
+  ownerSk: Uint8Array,
+  issuerKey: Uint8Array,
+): Promise<FinalizedTxData> => {
+  logger.info('Updating private state with owner secret key for authentication...');
+  const currentPrivateState = await providers.privateStateProvider.get('verifierPrivateState');
+  if (!currentPrivateState) {
+    throw new Error('Could not find private state to update for owner authentication.');
+  }
+  currentPrivateState.secret = ownerSk;
+  await providers.privateStateProvider.set('verifierPrivateState', currentPrivateState);
+  logger.info('Private state updated. Revoking issuer...');
+  const finalizedTxData = await verifierContract.callTx.revokeIssuer(issuerKey);
+  logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
+  return finalizedTxData.public;
+};
+
+export const getChallenge = async (
+  verifierContract: DeployedVerifierContract,
+): Promise<bigint> => {
+  logger.info('Getting challenge from contract...');
+  const finalizedTxData = await verifierContract.callTx.getChallenge();
+  logger.info(`Transaction ${finalizedTxData.public.txId} added in block ${finalizedTxData.public.blockHeight}`);
+  return finalizedTxData.private.result;
 };
 
 export const submitHealthProof = async (

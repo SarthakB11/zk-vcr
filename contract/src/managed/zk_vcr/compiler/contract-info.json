@@ -1,6 +1,15 @@
 {
   "circuits": [
     {
+      "name": "getChallenge",
+      "pure": false,
+      "arguments": [
+      ],
+      "result-type": {
+        "type-name": "Field"
+      }
+    },
+    {
       "name": "addIssuer",
       "pure": false,
       "arguments": [

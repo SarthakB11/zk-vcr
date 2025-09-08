@@ -12,6 +12,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-export * as Counter from "./managed/counter/contract/index.cjs";
+export * as Verifier from "./managed/zk_vcr/contract/index.cjs";
 export * from "./witnesses";
 //# sourceMappingURL=index.js.map

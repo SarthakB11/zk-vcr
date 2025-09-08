@@ -11,6 +11,7 @@ export type Witnesses<T> = {
 }
 
 export type ImpureCircuits<T> = {
+  getChallenge(context: __compactRuntime.CircuitContext<T>): __compactRuntime.CircuitResults<T, bigint>;
   addIssuer(context: __compactRuntime.CircuitContext<T>, issuerKey_0: Uint8Array): __compactRuntime.CircuitResults<T, []>;
   revokeIssuer(context: __compactRuntime.CircuitContext<T>,
                issuerKey_0: Uint8Array): __compactRuntime.CircuitResults<T, []>;
@@ -23,6 +24,7 @@ export type PureCircuits = {
 }
 
 export type Circuits<T> = {
+  getChallenge(context: __compactRuntime.CircuitContext<T>): __compactRuntime.CircuitResults<T, bigint>;
   addIssuer(context: __compactRuntime.CircuitContext<T>, issuerKey_0: Uint8Array): __compactRuntime.CircuitResults<T, []>;
   revokeIssuer(context: __compactRuntime.CircuitContext<T>,
                issuerKey_0: Uint8Array): __compactRuntime.CircuitResults<T, []>;
@@ -48,6 +50,7 @@ export type Ledger = {
     [Symbol.iterator](): Iterator<[bigint, boolean]>
   };
   readonly modelParameters: { riskThreshold: bigint };
+  readonly nonceCounter: bigint;
 }
 
 export type ContractReferenceLocations = any;

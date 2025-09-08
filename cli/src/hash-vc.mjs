@@ -1,9 +1,7 @@
 import * as compact from '@midnight-ntwrk/compact-runtime';
 
-// --- Start of copied code from generated contract file ---
-
 // These classes are copied from the generated file:
-// master-big/contract/src/managed/zk_vcr/contract/index.cjs
+// zk-vcr/contract/src/managed/zk_vcr/contract/index.cjs
 // They are needed to correctly serialize the structs for hashing.
 
 const _descriptor_0 = new compact.CompactTypeBytes(32);
@@ -42,9 +40,6 @@ class _VcSignaturePayload_0 {
 
 const labResultsSchema = new _LabResults_0();
 const vcSignaturePayloadSchema = new _VcSignaturePayload_0();
-
-// --- End of copied code ---
-
 
 const [, , ownerSkHex, cholesterol, bloodPressure, isSmoker] = process.argv;
 
